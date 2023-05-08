@@ -1,0 +1,23 @@
+Directory structure for the project
+-----------------------------------
+21f1004752 (root)
+----- Project
+	----- BlogSpot
+		----- templates
+			-----	security
+				----- login.html
+			----- .html files
+		----- static
+			----- styles.css
+			----- image files
+		----- exports
+			----- post_export_files
+		----- blog_app.py
+		----- blog_app_api.py
+		----- blog.db
+		----- requirements.txt
+		----- README.txt
+		----- BlogSpotAPI.yaml
+	----- architecture.txt
+	----- ProjectReport.pdf
+	----- project_blogspot_video.mp4
