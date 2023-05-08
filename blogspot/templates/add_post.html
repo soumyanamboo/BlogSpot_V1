@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'styles.css') }}">
+	<title>New Post</title>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<!-- <h3>BlogSpot</h3> -->
+			<div class="h-left"><img src="../static/header1.jpg" width="300" height="150"></div>
+			<div class="h-middle" align="middle"><h1>BlogSpot</h1>
+			<p>Freedom of Expression...</p> </div>
+			
+			<div class="h-right" align="right">
+				<h5> 
+					<a href="/search_user" >Search </a> | <a href="/profile_page/{{current_user.id}}">My Profile </a> | <a href="/logout">Logout </a> 
+				</h5>  	
+			</div>
+		</div>
+		
+		<div class="middle"> 
+			<div class="row">			
+				<div class="col-md-2">
+					{% include 'sidebar.html' %}
+				</div>	
+				<div class="col-md-10" style="padding: 50px;">	
+					<h5 align="center"> Add a Blog / Post:</h5> <br> 
+					<form action="/add_post" method="POST" id="add_post">
+						<div class="row">
+							<div class="col-md-2">
+								<label>Title: </label>
+							</div>
+							<div class="col-md-6">
+								<input type="text" name="name" required>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2">
+								<label>Description: </label>
+							</div>
+							<div class="col-md-6">
+								<textarea id="desc" name="desc" rows="5" cols="100"></textarea>
+							</div>
+						</div>
+						<br>
+						<div class="row">
+							<div class="col-md-2">
+								<label>Image Upload: </label>
+							</div>
+							<div class="col-md-6">
+								<input type="file" id="imgupload", name="img_name" accept="image/*"> 
+							</div>
+						</div>
+						<br>
+						<div align="center">
+							<button type="submit" class="btn btn-success"> Save </button>
+							<a href="/viewfeed">
+								<button type ="button" class="btn btn-primary" style="margin-left: 25px;">Cancel</button>
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>			 
+		</div>
+		<div class="footer">
+			<p>Soumya V Namboodiripad | 2022 Sept Term | Project for Modern Application Development 1</p>
+		</div>
+	</div>
+</body>
+</html>

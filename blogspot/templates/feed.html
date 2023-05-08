@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	
+	<link rel="stylesheet" type="text/css" href="../static/styles.css">
+	<title>Feeds</title>
+</head>
+<body>
+	<!-- <div class="container"> -->
+		<div class="header"> 
+			<div class="h-left"><img src="../static/header1.jpg" width="300" height="150"></div>
+			<div class="h-middle" align="middle"><h1>BlogSpot</h1>
+				<p>Freedom of Expression...</p>
+			</div>
+			<div class="h-right" align="right">
+				<h5> 
+					<a href="/search_user" >Search </a> | <a href="/profile_page/{{current_user.id}}">My Profile </a> | <a href="/logout">Logout </a> 
+				</h5>  	
+			</div>
+		</div>
+		<div class="middle">
+			<div class="row">
+				<!-- {% set like_flag=1 %} -->
+				<div class="col-md-2">
+					{% include 'sidebar.html' %}
+					<br><br>
+
+					<a href="/add_post" style="font-size: 15pt; align-self: right;">
+								<button type="button" class="btn btn-outline-info btn-sm button-10"> Create new post / blog </button>
+						</a>
+				</div>	
+				<div class="col-md-10" style="padding: 50px;">			
+					<div class="post-grid">
+						{% if post_list == [] %}
+							<br><br>
+							<div>
+							<p align="middle" style="font-size: 20pt;">
+								There are no posts in your feed. <br> 
+								Connect with other users to see what they are posting.
+							</p>
+							</div>
+						{% else %}
+							<h4> Feeds from your friends: </h4> <br>
+						{% endif %}
+						<br>
+						{% for post, post_user, comments in post_list %}
+				
+						<div class="post-item" align="center"> 
+							<h5 class="post-header" style="width: 20%; border: none; text-align: center;"><u> <b><a href="/profile_page/{{post['user_no']}}"> {{ post_user }}  </a></b></u>
+							</h5>
+							<p> {{post['post_title']}} </p>
+							<p align="right"> <b>created/modified on: </b>{{ post['post_updated_ts'] }}   </p>
+							<div class="row">
+								<div class="col-md-10">
+								<div class="post_desc_grid"> 
+								{% if post['image_url'] %}
+									<img src="../static/{{post['image_url']}}" width="350" height="250" class="post_img"> 
+								{% endif %}
+								<div class="post_desc" style="padding: 10px;"> {{post['description']}}  </div>
+								</div>
+								<div class="post_desc_grid" style="width: 90%"> Comments:&emsp;
+								<table>
+								{% for comment in comments %}
+									<tr>
+										<td>&emsp;<b>{{comment['user_name']}} :-</b></td>
+									</tr>
+									<tr>
+										<td>&emsp;&emsp;&emsp;{{comment['comment_text']}} </td> 
+										{% if comment['user_name'] == current_user.username %}
+											<td> 
+												<a href="/delete_comment/{{comment['comment_id']}}">
+												<button style="font-size: 12px;" class="btn btn-danger"> Delete </button> </a>
+											</td>
+										{% endif %}
+									</tr>									
+								{% endfor %}
+									<tr></tr>
+									<tr>
+										<form action="/addcomment/{{post['post_id']}}" method="POST" id="add_comment">
+										<td><input type="text" name="new_comment" size="30px"> &emsp;</td>
+										<td><button type="submit" class="btn btn-success"> Add Comment </button></td>
+										</form>
+									</tr>
+								</table>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+									<div style="width:10%">											
+										<a href="/like/{{post['post_id']}}">
+										<button style="font-size: 12px;" class="btn btn-primary"> <img src="../static/thumbsup.svg"> </button></a>
+											
+										{% if post['likes'] %}
+											<label style="width: 20px"> {{post['likes']}} </label>
+										{% else %}
+											<label style="width: 50px">   </label>
+										{% endif %}
+									</div>
+									<div style="width:10%">
+										<a href="/dislike/{{post['post_id']}}">
+										<button style="font-size: 12px;" class="btn btn-danger"> <img src="../static/thumbsdown.svg"> </button></a>
+										{% if post['dislikes'] %}
+											<label style="width: 20px"> {{post['dislikes']}} </label>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>	
+								
+						{% endfor %}		
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<p>Soumya V Namboodiripad | 2022 Sept Term | Project for Modern Application Development 1</p>
+		</div>
+	<!-- </div> -->
+</body>
+</html>

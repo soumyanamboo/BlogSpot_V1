@@ -1,0 +1,7 @@
+flask~=2.2.2
+SQLAlchemy~=1.4.45
+Werkzeug~=2.2.2
+pandas~=1.5.2
+flask_login
+flask_restful
+flask_sqlalchemy

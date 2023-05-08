@@ -1,0 +1,770 @@
+openapi: 3.0.0
+info:
+  title: BlogSpot API Documentation
+  description: >
+    <div> <h3> APIs for interaction with users and blogs </h3> 
+    <ol> 
+      <li> CRUD on users </li>
+      <li>CRUD on blogs</li>
+      <li>For getting the blogs/posts to show in feed</li>
+      <li>Adding and deleting Comments to a post </li>
+    </ol>
+    </div>
+
+    <h3> User Table Schema </h3>  <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>username</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>   
+      <tr>
+        <td>password</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>profile_image</td>
+        <td>String</td>
+        <td></td>
+      </tr>         
+    </tbody> </table> <br> 
+    <h3> Posts Table Schema </h3>  <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>post_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>post_title</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>String</td>
+        <td></td>
+      </tr>      
+      <tr>
+        <td>image_url</td>
+        <td>String</td>
+        <td></td>
+      </tr>  
+       <tr>
+        <td>post_created_ts</td>
+        <td>DateTime</td>
+        <td>Not null</td>
+      </tr>
+       <tr>
+        <td>likes</td>
+        <td>Integer</td>
+        <td></td>
+      </tr>
+       <tr>
+        <td>dislikes</td>
+        <td>Integer</td>
+        <td></td>
+      </tr>
+       <tr>
+        <td>user_no</td>
+        <td>Integer</td>
+        <td>ForeignKey(User.id)</td>
+      </tr>
+       <tr>
+        <td>post_updated_ts</td>
+        <td>DateTime</td>
+        <td></td>
+      </tr>
+    </tbody> </table> <br>
+
+    <h3> Followers Table Schema </h3>  
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>user_no</td>
+        <td>Integer</td>
+        <td>Primary Key, ForeignKey(User.id)</td>
+      </tr>
+      <tr>
+        <td>following</td>
+        <td>Integer</td>
+        <td>Primary Key, ForeignKey(User.id)</td>
+      </tr>
+    </tbody> </table>
+    <br>
+    
+    <h3> Comments Table Schema </h3>  
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>comment_id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>comment_test</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>post_id</td>
+        <td>Integer</td>
+        <td>ForeignKey(Posts.post_id)</td>
+      </tr>
+      <tr>
+        <td>user_name</td>
+        <td>String</td>
+        <td>ForeignKey(User.username)</td>
+      </tr>
+    </tbody> </table>
+    <br>
+    
+    <h3> Error Codes </h3>  <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>User</td>
+        <td>USER001</td>
+        <td>User Name is required.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>USER002</td>
+        <td>Email is required.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>USER003</td>
+        <td> Invalid Email.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>USER004</td>
+        <td> Password should be minimum 8 characters.</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>USER005</td>
+        <td> Wrong Password !!!</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>USER006</td>
+        <td> Passwords are not matching.</td>
+      </tr>
+      <tr>
+        <td>Post</td>
+        <td>POST001</td>
+        <td>Post Title is required.</td>
+      </tr>
+      <tr>
+        <td>Post</td>
+        <td>POST002</td>
+        <td>User id is required.</td>
+      </tr>
+      <tr>
+        <td>Post</td>
+        <td>POST003</td>
+        <td>Post not created by user</td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>POST003</td>
+        <td>User Not Found.</td>
+      </tr>
+      <tr>
+        <td>Followers</td>
+        <td>FEED001</td>
+        <td>User Not following anyone.</td>
+      </tr>
+      <tr>
+        <td>Post</td>
+        <td>FEED002</td>
+        <td>Wrong post_id.</td>
+      </tr>
+    </tbody> </table>
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000/
+paths:
+  /api/user/{user_id}:
+    description: End point to read, update and delete a user resource with id = user_id.
+    get:
+      description: Operation to Read USER resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 1
+                  user_name:
+                    type: string
+                    example: John
+                  email:
+                    type: string
+                    example: john@gmail.com
+                  followers_count:
+                    type: integer
+                    example: 3
+                  following_count:
+                    type: integer
+                    example: 1
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    put:
+      description: Operation to update the USER resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: John@gmail.com
+                password:
+                  type: string
+                  example: password
+      responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 1
+                  user_name:
+                    type: string
+                    example: John
+                  email:
+                    type: string
+                    example: john@gmail.com
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+    delete:
+      description: Operation to delete the USER resource
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 201
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: User not found
+        '500':
+          description: Intenal Server Error
+  /api/user:
+    description: End point to create user resource
+    post:
+      description: Operation to create/add the USER resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: John
+                email:
+                  type: string
+                  example: john@gmail.com
+                password:
+                  type: string
+                  example: password
+                repassword:
+                  type: string
+                  example: password
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    example: 1
+                  user_name:
+                    type: string
+                    example: John
+                  email:
+                    type: string
+                    example: john@gmail.com
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '409':
+          description: user_name already exist / email already exist
+        '500':
+          description: Internal Server Error
+  /api/post/{post_id}:
+    description: Url to read, update and delete the Posts resource.
+    get:
+      description: Operation to read POSTS resource
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: post object
+                type: object
+                properties:
+                  post_title:
+                    type: string
+                    example: Hello
+                  description:
+                    type: string
+                    example: My first post
+                  creted_time:
+                    type: string
+                    example: '2022-12-15T16:30:48.583989'
+                  likes:
+                    type: integer
+                    example: 2
+                  dislikes:
+                    type: integer
+                    example: 1
+                  post_user:
+                    type: string
+                    example: John
+                  updated_time:
+                    type: string
+                    example: '2022-12-15T16:30:48.583989'
+                  comments:
+                    type: string
+                    example: comments
+        '404':
+          description: Post not found
+        '500':
+          description: Internal server error
+    put:
+      description: Operation to update the POSTS resource
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_title:
+                  type: string
+                  example: Hi
+                description:
+                  type: string
+                  example: Modified post
+                post_user:
+                  type: integer
+                  example: 1
+                post_action:
+                  type: string
+                  example: like/dislike/None
+                comment:
+                  type: string
+                  example: 
+      responses:
+        '200':
+          description: Successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  post_title:
+                    type: string
+                    example: Hi
+                  description:
+                    type: string
+                    example: Modified post
+                  likes:
+                    type: integer
+                    example: 3
+                  dislikes:
+                    type: integer
+                    example: 0
+                  updated_ts:
+                    type: string
+                    example: 2022-12-15 16:30:48.583123
+                  comments:
+                    type: string
+                    example: comments
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '404':
+          description: Post not found
+        '500':
+          description: Internal Server Error
+    delete:
+      description: Operation to delete the POSTS resource
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: post not found
+        '500':
+          description: Internal Server Error
+  /api/post:
+    description: Url to create post resource
+    post:
+      description: Operation to create the POSTS resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_title:
+                  type: string
+                  example: Hi
+                description:
+                  type: string
+                  example: Modified post
+                post_user:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: post object
+                type: object
+                properties:
+                  post_id:
+                    type: integer
+                    example: 10
+                  post_title:
+                    type: string
+                    example: new title
+                  description:
+                    type: string
+                    example: New post
+                  post_user:
+                    type: integer
+                    example: 1
+                  post_created_time:
+                    type: string
+                    example: 2022-12-15 16:30:48.583123
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '409':
+          description: Post already exist
+        '500':
+          description: Internal Server Error
+  /api/feeds/{user_id}:
+    description: >-
+      URL to get the the posts from the users followed by the given user
+    get:
+      description: >-
+        URL to get the the posts from the users followed by the given user.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    post_id:
+                      type: integer
+                      example: 1
+                    post_title:
+                      type: string
+                      example: hi
+                    description:
+                      type: string
+                      example: my post description
+                    creted time:
+                      type: string
+                      example: 2022-12-15 16:30:48.583123
+                    likes:
+                      type: integer
+                      example: 1
+                    dislikes:
+                      type: integer
+                      example: 0
+                    post_user:
+                      type: integer
+                      example: 1
+                    updated time:
+                      type: string
+                      example: 2022-12-15 16:30:48.583123
+        '400':
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '404':
+          description: User Not following anyone.
+        '500':
+          description: Internal Server Error
+  /api/comments/{post_id}:
+    get:
+      description: URL to get comments for a post.
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    post_id:
+                      type: integer
+                      example: 1
+                    comments:
+                      type: string
+                      example: [comments]
+        '404':
+          description: Post Not found.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        
+        '500':
+          description: Internal Server Error
+  /api/comments/{user_id}/{post_id}:
+    post:
+      description: >-
+        URL to add comments for a post.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - in: path
+          name: post_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  example: new comment
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    post_title:
+                      type: string
+                      example: hi
+                    description:
+                      type: string
+                      example: my post description
+                    likes:
+                      type: integer
+                      example: 1
+                    dislikes:
+                      type: integer
+                      example: 0
+                    post_user:
+                      type: integer
+                      example: 1
+                    updated time:
+                      type: string
+                      example: 2022-12-15 16:30:48.583123
+                    comments:
+                      type: string
+                      example: [comments]
+        '404':
+          description: User Not found.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        
+        '500':
+          description: Internal Server Error
+  /api/comment/{comment_id}:
+    delete:
+      description: URL to delete comments.
+      parameters:
+         - in: path
+           name: comment_id
+           required: true
+           schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: post not found
+        '500':
+          description: Internal Server Error

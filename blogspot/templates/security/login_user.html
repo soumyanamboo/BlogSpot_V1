@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'styles.css') }}">
+	<title>Login</title>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<div class="h-left"> <img src="../static/header1.jpg" width="300" height="150"></div>
+			<div class="h-middle" align="left"><h1>BlogSpot</h1> 
+			<p>Freedom of Expression...</p></div>	 			
+		</div>
+		<div class="middle">
+			<br>
+			<div style="color: red;"> {{message}} </div>
+			<br>
+			<h4>Please login :</h4>
+			<br>
+			<form  action="/" method="POST" id="user-login">
+				<div class="row">
+					<div class="col-md-2">
+						<label>User Name: </label>
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="username" value="{{user}}">
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-2">
+						<label>Password: </label>
+					</div>
+					<div class="col-md-6">
+						<input type="password" name="password">
+					</div>
+				</div>
+				<br>
+				<div>
+					<button type="submit" class="btn btn-success" name="login" style="margin-right: 25px; margin-left: 50px;">Login
+					</button>
+					<div style="display:inline-block;">              </div>
+					
+					<a href="/register" class="btn btn-primary" style="margin-left: 25px; color: white;">Register</a>
+				</div>
+			</form>
+		</div>
+		<p>*New users please Register</p>
+		<div class="footer">
+			<p>Soumya V Namboodiripad | 2022 Sept Term | Project for Modern Application Development 1</p>
+		</div>
+	</div>
+</body>
+</html>
